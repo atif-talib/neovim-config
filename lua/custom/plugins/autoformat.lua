@@ -6,7 +6,7 @@ return { -- Autoformat
     {
       '<leader>bf',
       function()
-        require('conform').format { async = true }
+        require('conform').format { async = true, formatters = { 'black' } }
       end,
       mode = '',
       desc = '[B]uffer [F]ormat',
