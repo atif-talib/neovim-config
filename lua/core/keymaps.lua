@@ -19,6 +19,15 @@ vim.keymap.set('n', 'x', '"_x')
 -- Keep last yanked when pasting
 vim.keymap.set('v', 'p', '"_dP', opts)
 
+-- Git Fugitive and GV.vim mappings
+-- vim.keymap.set('n', '<leader>gB', ':G blame<CR>', { desc = "Git Blame (Fugitive)", unpack(opts) })
+vim.keymap.set('n', '<leader>gD', ':Gvdiffsplit<CR>', { desc = "Git Diff Split", unpack(opts) })
+vim.keymap.set('n', '<leader>gH', ':GV<CR>', { desc = "Git Commit History (Repo)", unpack(opts) })
+vim.keymap.set('n', '<leader>gF', ':GV!<CR>', { desc = "Git File History", unpack(opts) })
+
+-- Visual mode: Git history for selection
+vim.keymap.set('v', '<leader>gh', ":'<,'>GV<CR>", { desc = "Git History for Selection", noremap = true, silent = true })
+
 -- Resize with arrows
 vim.keymap.set('n', '<Up>', ':resize -2<CR>', opts)
 vim.keymap.set('n', '<Down>', ':resize +2<CR>', opts)
@@ -28,11 +37,10 @@ vim.keymap.set('n', '<Right>', ':vertical resize +2<CR>', opts)
 -- Buffers
 vim.keymap.set('n', '<Tab>', ':bnext<CR>', opts)
 vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', opts)
-vim.keymap.set('n', '<leader>x', ':Bdelete!<CR>', opts)   -- close buffer
-vim.keymap.set('n', '<leader>b', '<cmd> enew <CR>', opts) -- new buffer
+vim.keymap.set('n', '<leader>ba', ':%bd|e#|bd#<CR>', { desc = "Close all buffers except current" })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickvfvix list' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.open_float, { desc = 'Open diagnostic [Q]uickfix' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which

@@ -4,23 +4,22 @@ return { -- Autoformat
   cmd = { 'ConformInfo' },
   keys = {
     {
-      '<leader>f',
+      '<leader>bf',
       function()
-        require('conform').format { async = true, lsp_format = 'fallback' }
+        require('conform').format { async = true }
       end,
       mode = '',
-      desc = '[F]ormat buffer',
+      desc = '[B]uffer [F]ormat',
     },
     {
-      '<leader>oi',
+      '<leader>bi',
       function()
         require('conform').format {
           async = true,
-          lsp_fallback = true,
           formatters = { 'isort' },
         }
       end,
-      desc = '[O]rganize [I]mports (Python)',
+      desc = '[B]uffer organize [I]mports',
     },
   },
   opts = {
@@ -49,6 +48,12 @@ return { -- Autoformat
     },
     formatters = {
       black = {
+        prepend_args = { '--line-length', '120' },
+      },
+      ruff_format = {
+        prepend_args = { '--line-length', '120' },
+      },
+      ruff_fix = {
         prepend_args = { '--line-length', '120' },
       },
     },
