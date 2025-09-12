@@ -2,7 +2,6 @@
 return {
   'nvim-lualine/lualine.nvim',
   config = function()
-    -- Adapted from: https://github.com/nvim-lualine/lualine.nvim/blob/master/lua/lualine/themes/onedark.lua
     local colors = {
       blue = '#61afef',
       green = '#98c379',
@@ -37,25 +36,23 @@ return {
     }
 
     -- Import color theme based on environment variable NVIM_THEME
-    local env_var_nvim_theme = os.getenv 'NVIM_THEME' or 'nord'
+    local env_var_nvim_theme = os.getenv 'NVIM_THEME' or 'onedark_theme'
 
     -- Define a table of themes
     local themes = {
       onedark = onedark_theme,
-      nord = 'nord',
     }
 
     local mode = {
       'mode',
       fmt = function(str)
-        -- return ' ' .. str:sub(1, 1) -- displays only the first character of the mode
         return ' ' .. str
       end,
     }
 
     local filename = {
       'filename',
-      file_status = true, -- displays file status (readonly status, modified status)
+      file_status = true, -- displays file status (readonly, modified status)
       path = 0, -- 0 = just filename, 1 = relative path, 2 = absolute path
     }
 
@@ -68,7 +65,7 @@ return {
       sources = { 'nvim_diagnostic' },
       sections = { 'error', 'warn' },
       symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
-      colored = false,
+      colored = true,
       update_in_insert = false,
       always_visible = false,
       cond = hide_in_width,
@@ -81,13 +78,23 @@ return {
       cond = hide_in_width,
     }
 
+    -- 🔴 Recording indicator component
+    local recording = function()
+      local rec = vim.fn.reg_recording()
+      if rec ~= '' then
+        return '%#LualineRecording# REC @' .. rec .. '%*'
+      end
+      return ''
+    end
+
+    -- Define highlight for recording
+    vim.api.nvim_set_hl(0, "LualineRecording", { fg = colors.red1, bold = true })
+
     require('lualine').setup {
       options = {
+        globalstatus = true,
         icons_enabled = true,
-        theme = themes[env_var_nvim_theme], -- Set theme based on environment variable
-        -- Some useful glyphs:
-        -- https://www.nerdfonts.com/cheat-sheet
-        --        
+        theme = themes[env_var_nvim_theme],
         section_separators = { left = '', right = '' },
         component_separators = { left = '', right = '' },
         disabled_filetypes = { 'alpha', 'neo-tree', 'Avante' },
@@ -96,8 +103,13 @@ return {
       sections = {
         lualine_a = { mode },
         lualine_b = { 'branch' },
-        lualine_c = { filename },
-        lualine_x = { diagnostics, diff, { 'encoding', cond = hide_in_width }, { 'filetype', cond = hide_in_width } },
+        lualine_c = { filename, recording },
+        lualine_x = {
+          diagnostics,
+          diff,
+          { 'encoding', cond = hide_in_width },
+          { 'filetype', cond = hide_in_width },
+        },
         lualine_y = { 'location' },
         lualine_z = { 'progress' },
       },

@@ -1,8 +1,7 @@
 return {
   'stevearc/aerial.nvim',
-  lazy_load = true,
+  lazy = true,
   opts = {},
-  -- Optional dependencies
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'nvim-tree/nvim-web-devicons',
@@ -19,8 +18,8 @@ return {
         min_width = 30,
       },
     }
-    -- You probably also want to set a keymap to toggle aerial
-    vim.keymap.set('n', '<leader>o', '<cmd>AerialToggle!<CR>')
-    vim.keymap.set('n', '<leader>on', '<cmd>AerialNavToggle<CR>')
+
+    -- Toggle aerial window
+    vim.keymap.set('n', '<leader>o', '<cmd>AerialToggle!<CR>', { desc = "Toggle Aerial" })
   end,
 }
